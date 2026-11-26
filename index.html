@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yang 音股 · 跨年妖股潜力榜（2026-2027）</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080b10;
+    --bg-card: #0f141c;
+    --bg-soft: #161e29;
+    --bg-hover: #1b2534;
+    --border: #212c3a;
+    --border-soft: #1a2330;
+
+    --text: #e9eef6;
+    --text-2: #9aa9bb;
+    --muted: #63748a;
+
+    --gold: #f6b73c;
+    --gold-2: #ffd479;
+    --gold-soft: rgba(246, 183, 60, 0.12);
+    --gold-line: rgba(246, 183, 60, 0.30);
+
+    /* A 股习惯：红涨绿跌 */
+    --rise: #f2504f;
+    --rise-bg: rgba(242, 80, 79, 0.12);
+    --fall: #22c55e;
+    --fall-bg: rgba(34, 197, 94, 0.12);
+    --flat: #7b8a9d;
+
+    --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.9);
+    --radius: 12px;
+    --radius-lg: 18px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --font-mono: "SF Mono", "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(900px 460px at 12% -12%, rgba(246, 183, 60, 0.10), transparent 62%),
+      radial-gradient(760px 420px at 92% -6%, rgba(120, 90, 255, 0.10), transparent 60%);
+    background-repeat: no-repeat;
+  }
+
+  .container { max-width: 1120px; margin: 0 auto; padding: 28px 20px 56px; }
+  .mono { font-family: var(--font-mono); }
+
+  /* ============ Top bar ============ */
+  .topbar {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap; margin-bottom: 22px;
+  }
+  .brand { display: flex; gap: 14px; align-items: center; }
+  .logo {
+    width: 52px; height: 52px; flex: 0 0 52px;
+    display: grid; place-items: center; font-size: 26px;
+    border-radius: 16px;
+    background: linear-gradient(150deg, rgba(246, 183, 60, 0.22), rgba(246, 183, 60, 0.04));
+    border: 1px solid var(--gold-line);
+    box-shadow: 0 0 24px -6px rgba(246, 183, 60, 0.35) inset;
+  }
+  .brand h1 {
+    font-size: 25px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25;
+  }
+  .brand h1 em {
+    font-style: normal; color: var(--gold-2);
+    font-family: var(--font-mono); letter-spacing: -0.02em;
+  }
+  .brand .sub { margin-top: 5px; font-size: 13px; color: var(--text-2); }
+  .brand .sub b { color: var(--gold); font-weight: 600; }
+
+  .topmeta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--text-2);
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 13px; white-space: nowrap;
+  }
+  .pill.gold { color: var(--gold-2); border-color: var(--gold-line); background: var(--gold-soft); }
+  a.pill.link {
+    text-decoration: none; color: var(--gold-2);
+    border-color: var(--gold-line); background: var(--gold-soft);
+    transition: background .18s;
+  }
+  a.pill.link:hover { background: rgba(246, 183, 60, 0.18); }
+  .pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 8px var(--gold);
+  }
+
+  /* ============ Hero panel ============ */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 26px; align-items: center;
+    background: linear-gradient(160deg, rgba(22, 30, 41, 0.96), rgba(12, 17, 24, 0.96));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 26px 28px;
+    box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(420px 200px at 6% 0%, rgba(246, 183, 60, 0.14), transparent 70%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23f6b73c' stroke-opacity='.05' stroke-width='1'%3E%3Ccircle cx='60' cy='60' r='34'/%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3C/g%3E%3C/svg%3E") no-repeat right -30px top -24px;
+    opacity: 0.9;
+  }
+  .hero > * { position: relative; z-index: 1; }
+
+  .kicker {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px; font-weight: 600;
+  }
+  .hero-num {
+    display: flex; align-items: baseline; gap: 8px; font-family: var(--font-mono);
+    line-height: 1;
+  }
+  .hero-num .big {
+    font-size: 62px; font-weight: 700; color: var(--gold-2);
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 42px rgba(246, 183, 60, 0.35);
+  }
+  .hero-num .of { font-size: 20px; color: var(--muted); font-weight: 500; }
+  .hero-cap { margin-top: 10px; font-size: 13px; color: var(--text-2); }
+  .hero-cap b { color: var(--text); }
+
+  .hero-right { border-left: 1px solid var(--border); padding-left: 26px; }
+  .hero-right p { font-size: 13px; color: var(--text-2); }
+  .hero-right p b { color: var(--text); font-weight: 600; }
+  .hero-right .hint { margin-top: 10px; font-size: 12px; color: var(--muted); }
+  .hero-right .hint b { color: var(--gold); }
+
+  .samples { display: flex; flex-wrap: wrap; gap: 7px; margin: 11px 0 4px; }
+  .sample {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold-soft); border: 1px solid var(--gold-line);
+    border-radius: 8px; padding: 3px 9px;
+    font-size: 12px; color: var(--gold-2);
+  }
+  .sample .zh { font-size: 13px; font-weight: 600; color: var(--text); }
+  .sample .py { font-family: var(--font-mono); font-size: 11px; }
+
+  /* ============ Stats ============ */
+  .stats {
+    display: grid; gap: 12px; margin-top: 16px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .stat {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+  }
+  .stat .label {
+    font-size: 11px; color: var(--muted); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 7px;
+  }
+  .stat .value { font-size: 21px; font-weight: 700; font-family: var(--font-mono); letter-spacing: -0.02em; }
+  .stat .foot { font-size: 11px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .value.rise { color: var(--rise); }
+  .stat .value.fall { color: var(--fall); }
+  .stat .value.gold { color: var(--gold-2); }
+
+  /* ============ Compare ============ */
+  .compare {
+    margin-top: 14px; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px;
+  }
+  .compare-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .compare-head .t { font-size: 13px; font-weight: 600; }
+  .compare-head .s { font-size: 11px; color: var(--muted); }
+  .bar-row { display: grid; grid-template-columns: 132px 1fr 74px; align-items: center; gap: 12px; margin-top: 9px; }
+  .bar-row .name { font-size: 12px; color: var(--text-2); white-space: nowrap; }
+  .bar-track {
+    position: relative; height: 10px; border-radius: 999px;
+    background: var(--bg-soft); overflow: hidden;
+    box-shadow: inset 0 0 0 1px var(--border-soft);
+  }
+  .bar-fill {
+    position: absolute; top: 0; bottom: 0; left: 50%;
+    border-radius: 999px; transition: all .45s cubic-bezier(.4, 0, .2, 1);
+  }
+  .bar-fill.up { background: linear-gradient(90deg, rgba(242, 80, 79, .45), var(--rise)); }
+  .bar-fill.down { background: linear-gradient(270deg, rgba(34, 197, 94, .45), var(--fall)); }
+  .bar-fill.zero { background: var(--flat); width: 2px !important; left: calc(50% - 1px); }
+  .bar-track::before {
+    content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px;
+    width: 1px; background: var(--border); transform: translateX(-0.5px);
+  }
+  .bar-row .val { font-family: var(--font-mono); font-size: 13px; text-align: right; font-weight: 600; }
+
+  /* ============ Zodiac callout ============ */
+  .zodiac {
+    margin-top: 14px; padding: 16px 18px; border-radius: var(--radius);
+    background: linear-gradient(150deg, rgba(246, 183, 60, 0.10), rgba(246, 183, 60, 0.015));
+    border: 1px solid var(--gold-line);
+  }
+  .zodiac-head { display: flex; gap: 12px; align-items: flex-start; }
+  .zodiac-head .ic {
+    width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center;
+    font-size: 17px; border-radius: 10px;
+    background: var(--gold-soft); border: 1px solid var(--gold-line);
+  }
+  .zodiac-head .t { font-size: 14px; font-weight: 650; letter-spacing: -0.01em; }
+  .zodiac-head .t em { font-style: normal; color: var(--gold-2); }
+  .zodiac-head .s { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+  .zodiac-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .zitem {
+    display: flex; gap: 10px; align-items: baseline; text-align: left;
+    background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-soft);
+    border-radius: 9px; padding: 9px 12px; cursor: pointer;
+    color: inherit; font: inherit; transition: all .18s;
+  }
+  .zitem:hover, .zitem:focus-visible { background: rgba(246, 183, 60, 0.08); border-color: var(--gold-line); }
+  .zitem .zn { font-size: 13px; font-weight: 650; color: var(--gold-2); white-space: nowrap; }
+  .zitem .zq { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+  .zodiac .note { margin-top: 10px; font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .ztag {
+    display: inline-block; margin-left: 8px; font-size: 10px; font-weight: 600;
+    color: var(--gold-2); background: var(--gold-soft); border: 1px solid var(--gold-line);
+    border-radius: 4px; padding: 0 5px; vertical-align: 1px;
+  }
+
+  /* ============ Toolbar ============ */
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin: 22px 0 12px;
+  }
+  .search {
+    flex: 1 1 260px; display: flex; align-items: center; gap: 9px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 10px 14px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .search:focus-within { border-color: var(--gold-line); box-shadow: 0 0 0 3px rgba(246, 183, 60, 0.12); }
+  .search svg { color: var(--muted); flex: 0 0 15px; }
+  .search input {
+    flex: 1; min-width: 0; background: none; border: 0; outline: 0;
+    color: var(--text); font: inherit; font-size: 13.5px;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search kbd {
+    font: 11px var(--font-mono); color: var(--muted);
+    background: var(--bg-soft); border: 1px solid var(--border);
+    border-radius: 5px; padding: 1px 6px;
+  }
+
+  .seg { display: inline-flex; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
+  .seg button {
+    font: inherit; font-size: 12.5px; color: var(--text-2);
+    background: none; border: 0; border-radius: 7px; padding: 7px 13px;
+    cursor: pointer; transition: all .18s; white-space: nowrap;
+  }
+  .seg button:hover { color: var(--text); background: var(--bg-hover); }
+  .seg button.on { background: var(--gold-soft); color: var(--gold-2); box-shadow: inset 0 0 0 1px var(--gold-line); }
+
+  .count { font-size: 12px; color: var(--muted); margin: 0 0 10px 2px; }
+  .count b { color: var(--text-2); }
+
+  /* ============ Table ============ */
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);
+  }
+  .scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .scroll::-webkit-scrollbar { height: 7px; }
+  .scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 780px; }
+  thead th {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--bg-soft); color: var(--muted);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    text-align: left; padding: 11px 14px; white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
+  thead th.num { text-align: right; }
+  thead th.mid { text-align: center; }
+  tbody td { padding: 12px 14px; border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
+  tbody tr.main { cursor: pointer; transition: background .16s; }
+  tbody tr.main:hover { background: var(--bg-hover); }
+  tbody tr.main:focus-visible { outline: 2px solid var(--gold-line); outline-offset: -2px; }
+  tbody tr.main:hover .rank { color: var(--gold); }
+  tbody tr.main.open { background: var(--bg-hover); }
+  tbody tr:last-child td { border-bottom: 0; }
+
+  .rank {
+    font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+    text-align: center; width: 64px; color: var(--text-2);
+  }
+  .rank.top1 { color: var(--gold); }
+  .rank.top2 { color: #cbd5e1; }
+  .rank.top3 { color: #d9a441; }
+
+  .stock { min-width: 150px; }
+  .stock .n { font-size: 14px; font-weight: 650; letter-spacing: 0.01em; }
+  .stock .c { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .stock .badge-src { margin-left: 6px; font-size: 10px; color: var(--gold); background: var(--gold-soft); border: 1px solid var(--gold-line); border-radius: 4px; padding: 0 4px; font-weight: 500; }
+
+  .py { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); white-space: nowrap; }
+  .py .y {
+    color: var(--gold-2); font-weight: 700;
+    background: var(--gold-soft); border-radius: 4px; padding: 1px 3px;
+  }
+
+  .hit { text-align: center; }
+  .hit .ch { font-size: 19px; font-weight: 700; color: var(--gold-2); line-height: 1.2; }
+  .hit .py2 { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+
+  td.num { text-align: right; font-family: var(--font-mono); }
+  .chg { font-size: 14px; font-weight: 700; }
+  .chg.rise { color: var(--rise); }
+  .chg.fall { color: var(--fall); }
+  .chg.flat { color: var(--flat); }
+
+  .heat { width: 150px; }
+  .heat-wrap { display: flex; align-items: center; gap: 9px; justify-content: flex-end; }
+  .heat-track { flex: 1; height: 6px; min-width: 54px; background: var(--bg-soft); border-radius: 999px; overflow: hidden; }
+  .heat-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(246, 183, 60, 0.35), var(--gold)); }
+  .heat-num { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); min-width: 46px; text-align: right; }
+
+  .concepts { display: flex; flex-wrap: wrap; gap: 5px; max-width: 250px; }
+  .tag {
+    font-size: 11px; color: var(--text-2); background: var(--bg-soft);
+    border: 1px solid var(--border-soft); border-radius: 6px; padding: 1px 7px;
+    white-space: nowrap;
+  }
+  .tag.more { color: var(--muted); border-style: dashed; }
+
+  .caret {
+    width: 22px; height: 22px; margin-left: 2px; flex: 0 0 22px;
+    display: inline-grid; place-items: center; color: var(--muted);
+    transition: transform .2s;
+  }
+  tr.main.open .caret { transform: rotate(90deg); color: var(--gold); }
+
+  /* detail row */
+  tr.detail > td {
+    background: #0b1119; padding: 0; border-bottom: 1px solid var(--border-soft);
+  }
+  .detail-inner { padding: 16px 20px 20px 78px; }
+  .detail-inner h4 {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 7px; font-weight: 600;
+  }
+  .detail-inner .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .detail-inner .analyse {
+    font-size: 12.5px; color: var(--text-2); white-space: pre-wrap;
+    line-height: 1.75; max-height: 260px; overflow-y: auto;
+    border-left: 2px solid var(--gold-line); padding-left: 14px;
+  }
+  .detail-inner .empty-note { font-size: 12.5px; color: var(--muted); }
+  .detail-inner .meta-line { font-size: 12.5px; color: var(--text-2); margin-bottom: 4px; }
+  .detail-inner .meta-line b { color: var(--text); font-family: var(--font-mono); font-weight: 600; }
+  .detail-inner .meta-line .sep { color: var(--muted); margin: 0 8px; }
+
+  .empty { padding: 56px 24px; text-align: center; color: var(--muted); }
+  .empty .ic { font-size: 38px; margin-bottom: 10px; }
+
+  /* ============ Footer ============ */
+  footer { margin-top: 26px; color: var(--muted); font-size: 12px; line-height: 1.85; }
+  footer .row { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  footer strong { color: var(--text-2); font-weight: 500; }
+  footer code {
+    font-family: var(--font-mono); font-size: 11px;
+    background: var(--bg-soft); border: 1px solid var(--border-soft);
+    border-radius: 5px; padding: 1px 6px; color: var(--text-2);
+  }
+  .disclaimer {
+    margin-top: 14px; padding: 12px 16px; font-size: 11.5px; color: var(--text-2);
+    background: rgba(242, 80, 79, 0.05);
+    border: 1px solid rgba(242, 80, 79, 0.16);
+    border-left: 3px solid rgba(242, 80, 79, 0.6);
+    border-radius: var(--radius);
+  }
+  .disclaimer b { color: var(--rise); }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 980px) {
+    .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 20px; padding: 22px; }
+    .hero-right { border-left: 0; border-top: 1px solid var(--border); padding-left: 0; padding-top: 18px; }
+    .hero-num .big { font-size: 52px; }
+  }
+  @media (max-width: 680px) {
+    table { min-width: 0; }
+    .col-hit, .col-concepts, .col-heat { display: none; }
+    thead th, tbody td { padding: 10px 8px; }
+    .py { white-space: nowrap; font-size: 10.5px; letter-spacing: -0.01em; }
+    .py .y { padding: 0 2px; }
+    .rank { width: 34px; font-size: 13px; padding-left: 4px; padding-right: 4px; }
+    .stock { min-width: 0; }
+    .stock .n { font-size: 13.5px; }
+    .stock .c { font-size: 10px; }
+    .stock .badge-src { display: none; }
+    tbody td.num, .chg { font-size: 12.5px; }
+    .detail-inner { padding: 14px 14px 18px 14px; }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 18px 13px 40px; }
+    .brand h1 { font-size: 20px; }
+    .logo { width: 44px; height: 44px; flex-basis: 44px; font-size: 22px; border-radius: 13px; }
+    .brand .sub { font-size: 12px; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    .stat { padding: 11px 13px; }
+    .stat .value { font-size: 18px; }
+    .bar-row { grid-template-columns: 96px 1fr 62px; gap: 9px; }
+    .toolbar { gap: 8px; }
+    .seg button { padding: 6px 10px; font-size: 12px; }
+    .detail-inner { padding: 14px 14px 18px 14px; }
+    .heat { width: 110px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  /* ============ 本页新增 ============ */
+  a.pill.link {
+    text-decoration: none; color: var(--gold-2);
+    border-color: var(--gold-line); background: var(--gold-soft);
+    transition: background .18s;
+  }
+  a.pill.link:hover { background: rgba(246, 183, 60, 0.18); }
+
+  .hero-num .pct-sign { font-size: 30px; color: var(--gold-2); font-weight: 700; }
+
+  /* 类型徽章 */
+  .type {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .type.t-cont { color: #ff8a89; background: rgba(242, 80, 79, .12); border-color: rgba(242, 80, 79, .3); }
+  .type.t-acc { color: #fdba74; background: rgba(251, 146, 60, .12); border-color: rgba(251, 146, 60, .3); }
+  .type.t-start { color: var(--gold-2); background: var(--gold-soft); border-color: var(--gold-line); }
+  .type.t-ebb { color: #9aa8bb; background: rgba(154, 168, 187, .1); border-color: rgba(154, 168, 187, .25); }
+
+  .hot-badge {
+    display: inline-block; font-size: 10.5px; font-weight: 600; padding: 1px 7px;
+    border-radius: 5px; white-space: nowrap;
+    color: #ffd9a8; background: rgba(242, 80, 79, .16); border: 1px solid rgba(242, 80, 79, .35);
+  }
+
+  /* 概率条 */
+  .prob-wrap { display: flex; align-items: center; gap: 9px; min-width: 130px; }
+  .prob-track { flex: 1; height: 7px; border-radius: 999px; background: var(--bg-soft); overflow: hidden; box-shadow: inset 0 0 0 1px var(--border-soft); }
+  .prob-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(246, 183, 60, .35), var(--gold)); }
+  .prob-fill.high { background: linear-gradient(90deg, rgba(242, 80, 79, .45), #f2504f); }
+  .prob-num { font-family: var(--font-mono); font-size: 12.5px; font-weight: 700; color: var(--gold-2); min-width: 44px; text-align: right; }
+
+  /* 榜单表 */
+  table.rank td.num, table.rank th.num { text-align: right; }
+  table.rank { min-width: 900px; }
+  table.rank .stock .n { white-space: nowrap; }
+  .idx { font-family: var(--font-mono); font-weight: 700; color: var(--text-2); text-align: center; width: 46px; }
+  .c-price { width: 62px; }
+  .c-vol { width: 78px; }
+  .c-turn { width: 66px; }
+  .c-limit { width: 118px; white-space: nowrap; }
+  .c-high { width: 72px; }
+  .c-score { width: 64px; }
+  .c-prob { width: 180px; }
+  .idx.top1 { color: var(--gold); }
+  .idx.top2 { color: #cbd5e1; }
+  .idx.top3 { color: #d9a441; }
+  .score-cell { font-family: var(--font-mono); font-weight: 700; color: var(--gold-2); text-align: right; }
+
+  /* 详情卡片 */
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 6px; }
+  .ycard {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 16px 18px; position: relative; overflow: hidden;
+  }
+  .ycard::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-line), transparent);
+  }
+  .ycard.hot { border-color: rgba(242, 80, 79, .28); }
+  .ycard.hot::before { background: linear-gradient(90deg, transparent, rgba(242, 80, 79, .6), transparent); }
+
+  .yc-head { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .yc-rank { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--muted); min-width: 22px; }
+  .yc-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .yc-code { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-left: 2px; }
+  .yc-head .spacer { flex: 1; }
+
+  .yc-prob { display: flex; align-items: center; gap: 10px; margin: 12px 0 10px; }
+  .yc-prob .track { flex: 1; height: 8px; border-radius: 999px; background: var(--bg-soft); overflow: hidden; box-shadow: inset 0 0 0 1px var(--border-soft); }
+  .yc-prob .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(246, 183, 60, .3), var(--gold)); }
+  .yc-prob .fill.hot { background: linear-gradient(90deg, rgba(242, 80, 79, .4), #f2504f); }
+  .yc-prob .v { font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--gold-2); min-width: 52px; text-align: right; }
+
+  .yc-theme { font-size: 12px; color: var(--text-2); margin-bottom: 8px; }
+  .yc-meta {
+    display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11.5px; color: var(--muted);
+    padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dashed var(--border-soft);
+  }
+  .yc-meta b { color: var(--text-2); font-family: var(--font-mono); font-weight: 600; }
+  .yc-text { font-size: 12.5px; color: var(--text-2); line-height: 1.75; }
+  .yc-kv { display: flex; gap: 8px; margin-top: 8px; font-size: 12px; line-height: 1.65; }
+  .yc-kv .k {
+    flex: 0 0 34px; color: var(--gold); font-weight: 600; font-size: 11px;
+    padding-top: 1px; letter-spacing: 0.04em;
+  }
+  .yc-kv .v { color: var(--text-2); }
+  .yc-kv.risk .k { color: var(--fall); }
+
+  .section-title {
+    display: flex; align-items: baseline; gap: 10px; margin: 26px 0 10px;
+  }
+  .section-title h2 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .section-title .hint { font-size: 11.5px; color: var(--muted); }
+
+  /* 方法 */
+  details.method { margin-top: 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); }
+  details.method summary {
+    cursor: pointer; padding: 12px 16px; font-size: 13px; font-weight: 600;
+    list-style: none; display: flex; align-items: center; gap: 8px;
+  }
+  details.method summary::-webkit-details-marker { display: none; }
+  details.method summary::before { content: "▸"; color: var(--gold); font-size: 11px; transition: transform .2s; }
+  details.method[open] summary::before { transform: rotate(90deg); }
+  details.method .body { padding: 0 16px 16px; font-size: 12.5px; color: var(--text-2); line-height: 1.8; }
+  details.method table { min-width: 0; font-size: 12px; margin-top: 8px; }
+  details.method th { background: transparent; padding: 6px 10px; }
+  details.method td { padding: 6px 10px; white-space: normal; }
+
+  .legend-row { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .legend-row .type { margin-right: 4px; }
+
+  .empty { padding: 56px 24px; text-align: center; color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .c-vol, .c-turn, .c-limit, .c-high, .c-score { display: none; }
+    table.rank { min-width: 0; }
+    .yc-name { font-size: 15px; }
+    .c-price { width: 46px; }
+    .c-prob { width: 92px; }
+    .idx { width: 26px; font-size: 12px; }
+    .prob-wrap { min-width: 0; gap: 6px; }
+    .prob-num { min-width: 0; font-size: 11.5px; }
+    .stock { white-space: nowrap; }
+    .stock .n { font-size: 13.5px; }
+    .stock .c { font-size: 10px; }
+    thead th, tbody td { padding: 9px 6px; }
+    .hot-badge { font-size: 9.5px; padding: 0 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== Top bar ===== -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">🐑</div>
+      <div>
+        <h1>跨年妖股潜力榜 · <em>yang</em> 音股</h1>
+        <div class="sub">2026 → 2027 跨年窗口（12/01 - 02/28）· 结构 + 股性 + 位置 + 题材 四维打分 · 主观概率</div>
+      </div>
+    </div>
+    <div class="topmeta">
+      <span class="pill gold"><span class="dot"></span>数据 <b class="mono" id="meta-date">--</b></span>
+      <a class="pill link" href="yang-stocks.html">热榜版</a>
+      <a class="pill link" href="yang-market.html">全市场清单</a>
+    </div>
+  </div>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="kicker">榜首概率</div>
+      <div class="hero-num">
+        <span class="big" id="hero-prob">--</span><span class="pct-sign">%</span>
+      </div>
+      <div class="hero-cap"><b id="hero-name">--</b> · 结构分 <b id="hero-score">--</b> · 候选 <b id="hero-total">--</b> 只</div>
+    </div>
+    <div class="hero-right">
+      <div class="kicker">概率口径</div>
+      <p>
+        <b>续航 / 加速型</b>（已有主升浪，含热榜在列）：12/01 - 02/28 期间<b>再创新高且最大涨幅 ≥50%</b> 的概率。<br>
+        <b>启动型</b>（尚未主升浪）：同期<b>阶段涨幅 ≥100%（含 ≥4 连板）</b> 的概率。
+      </p>
+      <p class="hint">
+        妖股是结构与情绪的游戏，不是业绩。下列概率是主观贝叶斯估计，低于 1% 的只进备选表。
+        <b>「热榜在列」只代表已被市场发现</b>，不代表安全。
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 口径切换 ===== -->
+  <div class="toolbar">
+    <div class="seg" id="universe">
+      <button data-u="all" class="on">全部（含热榜）</button>
+      <button data-u="cold">仅非热榜</button>
+    </div>
+    <div class="seg" id="view">
+      <button data-v="rank" class="on">榜单</button>
+      <button data-v="cards">逐只分析</button>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <!-- ===== 方法 ===== -->
+  <details class="method">
+    <summary>打分方法与数据口径（点开看）</summary>
+    <div class="body">
+      <p>结构化指标由日线（前复权）与收盘快照计算，题材与「触发/风险」为人工研判；结构分 0-100 由下列维度加权，人工可覆盖。</p>
+      <table>
+        <thead><tr><th>维度</th><th>权重</th><th>妖股偏好</th></tr></thead>
+        <tbody>
+          <tr><td>流通市值</td><td>30</td><td>10-25 亿最佳，&gt;100 亿基本没弹性</td></tr>
+          <tr><td>绝对股价</td><td>20</td><td>3-8 元最佳，&gt;30 元跟风门槛高</td></tr>
+          <tr><td>换手率 / 成交额</td><td>20</td><td>日换手 8%+ 才有游资接力空间</td></tr>
+          <tr><td>涨停 / 连板基因</td><td>20</td><td>近 60 日 ≥2 次涨停或出现 3 连板</td></tr>
+          <tr><td>位置</td><td>10</td><td>距 250 日高点 -20% 内（强势）或低位刚启动</td></tr>
+          <tr><td>波动率</td><td>10</td><td>日波动 3.5%+，波动大才有价差</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px">
+        涨停判定：主板 ≥9.5%、创业板 ≥19.5%、ST ≥4.8%。数据源：腾讯行情（前复权），失败退回新浪；快照来自新浪全市场列表。
+        龙虎榜、股东户数、质押与最新公告未纳入——这正是概率最大的不确定性来源。
+      </p>
+    </div>
+  </details>
+
+  <!-- ===== 榜单 ===== -->
+  <div id="view-rank">
+    <div class="section-title"><h2>潜力榜</h2><span class="hint" id="rank-hint"></span></div>
+    <div class="card">
+      <div class="scroll">
+        <table class="rank">
+          <thead>
+            <tr>
+              <th style="width:46px;text-align:center">#</th>
+              <th>股票</th>
+              <th style="width:64px">类型</th>
+              <th class="num c-price">现价</th>
+              <th class="num c-vol">流通(亿)</th>
+              <th class="num c-turn">换手</th>
+              <th class="c-limit">60日涨停/连板</th>
+              <th class="num c-high">距250高</th>
+              <th class="num c-score">结构分</th>
+              <th class="c-prob">跨年妖股概率</th>
+            </tr>
+          </thead>
+          <tbody id="rank-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 逐只分析 ===== -->
+  <div id="view-cards" hidden>
+    <div class="section-title"><h2>逐只研判</h2><span class="hint" id="cards-hint"></span></div>
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <!-- ===== 备选 ===== -->
+  <div class="section-title"><h2>备选与观察</h2><span class="hint">概率靠后，仅在出现放量/催化时才值得重新评估</span></div>
+  <div class="card">
+    <div class="scroll">
+      <table class="rank">
+        <thead>
+          <tr>
+            <th style="width:46px;text-align:center">#</th>
+            <th>股票</th>
+            <th style="width:64px">类型</th>
+            <th class="num c-price">现价</th>
+            <th class="num c-vol">流通(亿)</th>
+            <th class="num c-turn">换手</th>
+            <th class="c-limit">60日涨停</th>
+            <th class="num c-high">距250高</th>
+            <th class="num c-score">结构分</th>
+            <th class="num c-prob">概率</th>
+          </tr>
+        </thead>
+        <tbody id="rest-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="row">
+      <span><strong>数据快照：</strong><span id="foot-date">--</span></span>
+      <span><strong>页面生成：</strong><span id="foot-gen">--</span></span>
+      <span><strong>行情来源：</strong>腾讯（前复权）/ 新浪</span>
+      <span><strong>重新生成：</strong><code>npm run yaogu</code></span>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <span><strong>样本：</strong><code>30/60</code> 开头 yang 音股 47 只 + 热榜 yang 音股 5 只（另 2 只已在 47 内）</span>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <span><strong>口径提示：</strong>300516 久之洋、300920 润阳科技、301210 金杨精密、603307 扬州金泉 年内有送转，距高点按不复权数据计算，回撤可能被高估约 10-22 个百分点</span>
+    </div>
+    <div class="disclaimer">
+      ⚠️ <b>免责声明：</b>本页是「结构 + 情绪」的量化打分配上主观概率，<b>不是投资建议，也不是收益预测</b>。
+      妖股的本质是资金博弈与情绪接力，绝大多数候选不会成为妖股；已上涨 100%-400% 的个股同样可能出现 40%-60% 的回撤。
+      本页未纳入龙虎榜、股东户数、质押、减持与最新公告，任何一条消息都可能推翻判断。股市有风险，投资需谨慎。
+    </div>
+  </footer>
+</div>
+
+<script>
+window.__YAOGU__ = {"generatedAt":"2026-11-26 12:12","snapshotAt":"2026-11-26","total":52,"hotCount":7,"rows":[{"code":"002242","name":"九阳股份","board":"深市主板","hotRank":1,"hotHeat":"14315061","hotTag":"持续上榜","price":41.9,"nmc":319.2,"turnover":16.67981,"amount":51.75,"pe":261.875,"r5":34.3,"r20":82.2,"r60":400.6,"limit60":14,"maxStreak":6,"fromHigh":-1.2,"fromLow":445.6,"vol60":5.08,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:43.848Z","type":"续航","score":92,"prob":28,"theme":"小家电龙头 · 热榜 #1 · 60日约 +400%","analysis":"热度值 1432 万、榜单第一。近 60 日 14 个涨停、最长 6 连板，阶段涨幅约 400%，距 250 日高点仅 -1.2%，日成交 51.75 亿、换手 16.7%——它已不是「能不能成为妖股」，而是本轮跨年妖股的龙头本体。319 亿流通市值靠超高换手维持，属于「大市值妖股」，靠的是情绪与资金合力而非小盘弹性。","trigger":"维持 15% 以上日换手、不破 5 日线，主升浪可延续到元旦后；缩量滞涨则警惕见顶","risk":"涨幅巨大，一旦放量长阴或连板断档，历史回撤多在 40%-60%"},{"code":"002086","name":"东方海洋","board":"深市主板","hotRank":7,"hotHeat":"4181648","hotTag":"持续上榜","price":4.77,"nmc":75.4,"turnover":41.69275,"amount":30.97,"pe":-59.625,"r5":39.9,"r20":85.6,"r60":120.8,"limit60":14,"maxStreak":4,"fromHigh":-7.6,"fromLow":203.8,"vol60":5.89,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:41.929Z","type":"续航","score":90,"prob":28,"theme":"海洋养殖/海洋生物 · 热榜 #7 · 4.77 元低价","analysis":"换手 41.7%，全名单最极端（成交 30.97 亿）；近 60 日 14 个涨停、最长 4 连板，价格仅 4.77 元、流通 75 亿。低价 + 极端换手 + 热榜第 7，是典型游资接力品种，距高点 -7.6%，仍在主升浪中。","trigger":"缩量回踩 5 日线不破，或出现海洋经济/深海科技新催化","risk":"41% 换手意味着筹码极度松动，退潮时往往第一个崩"},{"code":"000678","name":"襄阳轴承","board":"深市主板","hotRank":10,"hotHeat":"3359316","hotTag":"首板涨停","price":21.96,"nmc":100.9,"turnover":26.3974,"amount":24.67,"pe":-199.636,"r5":31.2,"r20":17.1,"r60":150.4,"limit60":16,"maxStreak":5,"fromHigh":-5.8,"fromLow":200,"vol60":6.2,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:39.580Z","type":"续航","score":88,"prob":26,"theme":"汽车轴承/机器人轴承 · 热榜 #10 · 60日约 +150%","analysis":"近 60 日 16 个涨停（全名单最多）、最长 5 连板，距高点 -5.8%，流通 100.9 亿、换手 26.4%、成交 24.67 亿。轴承是机器人关节核心零部件，题材想象空间大，且已被资金反复验证，属于「有主线故事」的妖股。","trigger":"人形机器人产业链催化 + 缩量回踩 10 日线","risk":"位置高、换手高，情绪反转时杀跌同样迅猛"},{"code":"002708","name":"光洋股份","board":"深市主板","hotRank":63,"hotHeat":"985284","hotTag":"4天2板","price":23.26,"nmc":118.5,"turnover":19.13549,"amount":22.95,"pe":127.382,"r5":13.6,"r20":11.7,"r60":99.5,"limit60":12,"maxStreak":4,"fromHigh":-16.6,"fromLow":170.2,"vol60":5.73,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:45.732Z","type":"续航","score":84,"prob":22,"theme":"轴承/汽车零部件 · 热榜 #63 · 距高 -16.6%","analysis":"近 60 日 12 个涨停、最长 4 连板，60 日涨幅约 100%，目前距高点 -16.6% 处于中继位，换手 19.1%、成交 22.95 亿，资金尚未离场。","trigger":"重新放量突破前高，或机器人轴承订单落地","risk":"118 亿市值且已翻倍，续航需要新故事，否则易高位横盘"},{"code":"600280","name":"中央商场","board":"沪市主板","hotRank":86,"hotHeat":"775058","hotTag":"2天2板","price":3.1,"nmc":35,"turnover":14.17981,"amount":4.92,"pe":-8.857,"r5":20.6,"r20":10.7,"r60":1,"limit60":3,"maxStreak":2,"fromHigh":-42.5,"fromLow":31.9,"vol60":3.89,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:47.159Z","type":"加速","score":82,"prob":20,"theme":"商业零售 · 热榜 #86 · 3.10 元 / 35 亿 · 2天2板","analysis":"全名单里「低价 + 低位 + 刚启动」结构最好的一只：3.10 元、流通仅 35 亿、距高点 -42.5%，但近 5 日已涨 20.6%、走出 2 天 2 板，换手 14.2%，稳在热榜第 86。商业零售基本面很差（PE -8.86、亏损），正因如此才有壳资源/重组想象空间。","trigger":"三板/四板确认 + 成交额放大到 6 亿以上","risk":"亏损股，连板断档后常以跌停方式快速回归"},{"code":"600261","name":"阳光照明","board":"沪市主板","hotRank":45,"hotHeat":"1152142","hotTag":"","price":4.03,"nmc":53.8,"turnover":20.11035,"amount":11.23,"pe":28.786,"r5":-12.8,"r20":8.3,"r60":26.3,"limit60":11,"maxStreak":4,"fromHigh":-36.8,"fromLow":40.9,"vol60":5.91,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:45.121Z","type":"退潮","score":62,"prob":12,"theme":"LED 照明 · 热榜 #45 · 4.03 元 / 53.8 亿","analysis":"曾有 4 连板、近 60 日 11 个涨停，但近 5 日已跌 12.8%、距高点 -36.8%，今日 -7.78%，属主升浪后的第一轮退潮；仍在热榜第 45，说明关注度还没散。","trigger":"缩量止跌后重新放量首板，才有二波机会","risk":"退潮期反弹多为诱多，容易越做越亏"},{"code":"002724","name":"海洋王","board":"深市主板","hotRank":62,"hotHeat":"987487","hotTag":"4天2板","price":9.14,"nmc":51.8,"turnover":16.77757,"amount":8.94,"pe":64.05,"r5":6.8,"r20":-32.5,"r60":36.8,"limit60":11,"maxStreak":6,"fromHigh":-38.2,"fromLow":96.1,"vol60":6.18,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:47.605Z","type":"退潮","score":55,"prob":8,"theme":"工业照明 · 热榜 #62 · 9.14 元 / 51.8 亿","analysis":"曾有 6 连板、11 个涨停，但近 20 日已跌 32.5%、距高点 -38.2%，是典型的妖股退潮段；今日 -4.19%，仍在热榜第 62。","trigger":"需要军工照明、深海科技等新题材才能重启","risk":"退潮中继形态，容易长期阴跌"},{"code":"600281","name":"华阳新材","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":3.84,"nmc":19.8,"turnover":5.82993,"amount":1.15,"pe":-317.355,"r5":-6.1,"r20":-25.4,"r60":-21.6,"limit60":4,"maxStreak":1,"fromHigh":-44.2,"fromLow":9.4,"vol60":4.59,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:49.490Z","type":"启动","score":78,"prob":6,"theme":"化工新材料 · 山西国资 · 3.84 元 / 19.8 亿","analysis":"3.84 元低价 + 19.8 亿流通，是标准「小盘低价」组合，翻倍也只要 40 亿市值。山西国资背景，长期亏损（PE -317），重组/资产注入想象空间大，名称带「阳」可叠加生肖题材。近 60 日 4 次涨停（均为单板），距高点 -44%，处于底部区域。","trigger":"出现 2 连板 + 换手放大到 10% 以上，概率可跳到 15%+","risk":"化工景气弱、缩量，缺乏连板延续性，可能长期趴底"},{"code":"603330","name":"天洋新材","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":7.78,"nmc":33.7,"turnover":7.69656,"amount":2.58,"pe":-13.186,"r5":-5.2,"r20":-19.6,"r60":-30.4,"limit60":4,"maxStreak":4,"fromHigh":-39.8,"fromLow":41.2,"vol60":4.78,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:23.285Z","type":"启动","score":76,"prob":5.5,"theme":"光伏胶膜 · 7.78 元 / 33.7 亿 · 有 4 连板史","analysis":"近 60 日出现过一个完整的 4 连板，是全名单里最强的「坐庄痕迹」，说明有资金愿意做。光伏封装胶膜（EVA/POE）具备行业底部反转 + 涨价预期，亏损（PE -13）反而给了困境反转故事。4 连板后已回落 40%，套牢盘较厚。","trigger":"再次放量首板即视为第二波启动","risk":"光伏产能过剩、业绩差，二次启动需要新催化"},{"code":"600189","name":"泉阳泉","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":9.05,"nmc":64.7,"turnover":8.54125,"amount":5.42,"pe":452.5,"r5":13.7,"r20":12.6,"r60":20.5,"limit60":5,"maxStreak":2,"fromHigh":-14.6,"fromLow":32.5,"vol60":4.65,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:42.905Z","type":"启动","score":74,"prob":5,"theme":"矿泉水/长白山 · 9.05 元 / 64.7 亿 · 已放量","analysis":"唯一「已在走强」的非热榜个股：5 日 +13.7%、20 日 +12.6%、60 日 +20.5%，距高点仅 -15%，换手 8.5%、成交 5.42 亿，近 60 日 5 个涨停。矿泉水 + 长白山 + 吉林国资，冬季冰雪/大健康有季节性叙事。","trigger":"放量突破前高，即可确认第二波主升","risk":"市值 64.7 亿、PE 452 偏贵，翻倍空间受限；已上涨，追高易套"},{"code":"603703","name":"盛洋科技","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":8.4,"nmc":34.9,"turnover":2.18653,"amount":0.76,"pe":-140,"r5":3.7,"r20":-22.7,"r60":-15.8,"limit60":5,"maxStreak":2,"fromHigh":-58,"fromLow":15.2,"vol60":4.61,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:28.818Z","type":"启动","score":70,"prob":4.5,"theme":"射频/卫星互联网 · 8.40 元 / 34.9 亿 · 5 次涨停","analysis":"近 60 日 5 次涨停（次数并列最多），今日再度涨停，且换手仅 2.19% —— 筹码锁定度高、抛压轻。射频电缆/卫星互联网/军工电子属于不易证伪的想象题材，公司亏损（PE -140）。","trigger":"卫星互联网或军工电子板块整体启动","risk":"成交仅 0.76 亿，流动性偏薄，大资金进出困难"},{"code":"301502","name":"华阳智能","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":53.25,"nmc":12.6,"turnover":19.42116,"amount":2.47,"pe":142.608,"r5":15.5,"r20":-21.2,"r60":4.6,"limit60":4,"maxStreak":3,"fromHigh":-42.3,"fromLow":35.1,"vol60":6.94,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:40.967Z","type":"启动","score":68,"prob":4,"theme":"次新 · 微特电机 · 53.25 元 / 12.6 亿","analysis":"流通仅 12.6 亿（全名单最小），换手 19.4%、成交 2.47 亿，近 5 日 +15.5%、量比 1.8，资金进出极快。近 60 日 4 次涨停含一次 3 连板。次新 + 微特电机，可挂靠家电/机器人零部件。","trigger":"出现 4 板并带动次新板块情绪","risk":"53 元绝对价偏高不利于散户跟风；次新解禁是明牌"},{"code":"300030","name":"阳普医疗","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":5.11,"nmc":13.9,"turnover":5.28759,"amount":0.74,"pe":102.2,"r5":-5.9,"r20":-16.1,"r60":-26.6,"limit60":1,"maxStreak":1,"fromHigh":-43.2,"fromLow":4.3,"vol60":4.16,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:49.483Z","type":"启动","score":64,"prob":3.5,"theme":"医疗器械 · 5.11 元 / 13.9 亿 · 最贴近底部","analysis":"5.11 元 + 13.9 亿流通，三低（低价、低市值、低位：距低点仅 +4.3%）。医疗器械（真空采血管），历史上有跨界重组基因，且名称以「阳」开头，在生肖题材里辨识度最高。","trigger":"需要公告级催化：并购、订单或实控人变更","risk":"近 60 日仅 1 次涨停，无连板积累，游资尚未进场"},{"code":"600963","name":"岳阳林纸","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":3.49,"nmc":61.3,"turnover":4.0732,"amount":2.41,"pe":-26.846,"r5":7.4,"r20":-10.3,"r60":0.6,"limit60":1,"maxStreak":1,"fromHigh":-47.7,"fromLow":19.5,"vol60":3.47,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:03.393Z","type":"启动","score":60,"prob":3,"theme":"林业碳汇 · 3.49 元 / 61.3 亿 · 今日涨停","analysis":"3.49 元低价，流通 61.3 亿偏大。林业碳汇（CCER 扩容是跨年潜在政策催化）+ 湖南国资，今日刚涨停（+10.10%），量比 1.48 放量。","trigger":"CCER 方法学扩容等政策落地 + 成交额持续放大","risk":"连年亏损、碳汇故事炒了多年兑现度低，市值翻倍到 120 亿难度大"},{"code":"301079","name":"邵阳液压","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":25.4,"nmc":19.5,"turnover":16.76689,"amount":3.39,"pe":508,"r5":0.2,"r20":-25.3,"r60":-8,"limit60":1,"maxStreak":1,"fromHigh":-63.8,"fromLow":13.7,"vol60":4.7,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:32.766Z","type":"启动","score":58,"prob":2.5,"theme":"液压件 · 25.40 元 / 19.5 亿 · 换手 16.8%","analysis":"19.5 亿流通 + 换手 16.8% + 成交 3.39 亿，流动性足够游资进出。液压元件可挂工程机械/军工液压，属高端制造想象。","trigger":"军工或工程机械板块整体回暖","risk":"PE 508 极贵、距高点 -64% 趋势走坏，名字辨识度低"},{"code":"301210","name":"金杨精密","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":24.31,"nmc":15,"turnover":24.58796,"amount":3.73,"pe":54.022,"r5":2.3,"r20":-15.3,"r60":1.3,"limit60":0,"maxStreak":0,"fromHigh":-47.5,"fromLow":27.7,"vol60":4.75,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:35.179Z","type":"启动","score":55,"prob":2,"theme":"次新 · 精密结构件 · 24.31 元 / 15.0 亿","analysis":"流通 15 亿 + 换手 24.6%（全名单最高），说明筹码在剧烈换手；但近 60 日 0 次涨停，有量的震荡不等于妖股启动。次新 + 精密结构件，题材不性感。","trigger":"首次放量涨停，才算真正启动","risk":"无涨停基因，更像游资做 T 的场所"},{"code":"603863","name":"松炀资源","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":9.14,"nmc":18.7,"turnover":2.38285,"amount":0.45,"pe":-9.14,"r5":-12.5,"r20":-22.8,"r60":-27.6,"limit60":2,"maxStreak":1,"fromHigh":-58.2,"fromLow":3.5,"vol60":3.55,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:32.996Z","type":"启动","score":50,"prob":1.5,"theme":"再生纸 · 9.14 元 / 18.7 亿 · 亏损壳属性","analysis":"9.14 元 + 18.7 亿流通，亏损（PE -9），再生纸企业。小盘 + 亏损 + 无主业亮点 = 典型壳/重组想象，这类股在年底壳行情里常有异动。","trigger":"并购重组政策 + 壳股行情同时到位","risk":"换手仅 2.4%、成交 0.45 亿，流动性陷阱，无催化可长期不动"},{"code":"600569","name":"安阳钢铁","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":1.5,"nmc":43.1,"turnover":1.00813,"amount":0.43,"pe":-8.671,"r5":-7.4,"r20":-10.2,"r60":-18.5,"limit60":2,"maxStreak":1,"fromHigh":-47.4,"fromLow":2,"vol60":3.03,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:57.297Z","type":"启动","score":48,"prob":1.5,"theme":"钢铁 · 1.50 元超低价 · 43.1 亿","analysis":"1.50 元超低价 + 2 次涨停 + 河南国资重组预期，价格弹性最大；但换手仅 1.0%、钢铁主业无想象空间。","trigger":"出现连续涨停 + 换手放大到 5% 以上","risk":"流动性差，低价陷阱"},{"code":"300420","name":"五洋自控","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":4.64,"nmc":51.8,"turnover":4.24319,"amount":2.2,"pe":116,"r5":-4.7,"r20":-21.8,"r60":-45.3,"limit60":0,"maxStreak":1,"fromHigh":-55.3,"fromLow":35.7,"vol60":3.77,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:01.812Z","type":"启动","score":59,"prob":1.2,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300606","name":"金太阳","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":21.44,"nmc":25.5,"turnover":8.84518,"amount":2.24,"pe":153.143,"r5":-8.8,"r20":-20.2,"r60":-41.8,"limit60":0,"maxStreak":0,"fromHigh":-58.7,"fromLow":6.8,"vol60":4.34,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:08.981Z","type":"启动","score":59,"prob":1.2,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300637","name":"扬帆新材","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":8.55,"nmc":20.1,"turnover":5.99411,"amount":1.22,"pe":132.148,"r5":-16.6,"r20":-7.1,"r60":-6.2,"limit60":0,"maxStreak":0,"fromHigh":-39.9,"fromLow":23.6,"vol60":3.79,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:11.470Z","type":"启动","score":47,"prob":1.2,"theme":"光引发剂 · 8.55 元 / 20.1 亿 · 近 5 日 -16.6%","analysis":"20.1 亿小盘 + 8.55 元低价，近 5 日却大跌 16.6%、量比 1.72，属于放量下跌而非启动；近 60 日无涨停，PE 132 偏贵。光引发剂主业缺乏故事。","trigger":"缩量止跌并出现首个放量涨停","risk":"下跌趋势未止，左侧抄底风险大"},{"code":"600558","name":"大西洋","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":4.35,"nmc":39,"turnover":2.91776,"amount":1.14,"pe":21.429,"r5":-3.3,"r20":-26.3,"r60":-12.3,"limit60":3,"maxStreak":1,"fromHigh":-37.4,"fromLow":3.6,"vol60":4.09,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:55.312Z","type":"启动","score":46,"prob":1.2,"theme":"焊接材料 · 4.35 元 / 39 亿 · 3 次涨停","analysis":"4.35 元 + 39 亿流通，近 60 日 3 次涨停，四川国资焊材，结构尚可但成交偏小。","trigger":"放量首板","risk":"主业平淡，缺乏题材抓手"},{"code":"603382","name":"海阳科技","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":13.61,"nmc":15.7,"turnover":2.35691,"amount":0.37,"pe":18.903,"r5":-7.8,"r20":-31.5,"r60":-29.6,"limit60":1,"maxStreak":1,"fromHigh":-64,"fromLow":0.8,"vol60":3.3,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:26.255Z","type":"启动","score":44,"prob":1.2,"theme":"次新 · 尼龙化工 · 13.61 元 / 15.7 亿 · 最底部","analysis":"流通 15.7 亿、距 250 日低点仅 +0.8%，是全名单最底部的次新股，需要一次放量确认。","trigger":"放量突破 20 日线","risk":"下跌趋势未止，左侧风险大"},{"code":"300872","name":"天阳科技","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":9.25,"nmc":39,"turnover":5.9311,"amount":2.3,"pe":-31.897,"r5":-25.1,"r20":-34.6,"r60":-41.5,"limit60":0,"maxStreak":0,"fromHigh":-60.2,"fromLow":2.5,"vol60":4.48,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:21.120Z","type":"启动","score":57,"prob":1.1,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300920","name":"润阳科技","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":28.98,"nmc":25,"turnover":3.47604,"amount":0.89,"pe":107.333,"r5":-10.3,"r20":-1.8,"r60":-10.6,"limit60":0,"maxStreak":0,"fromHigh":-44.1,"fromLow":14.5,"vol60":4.43,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:23.155Z","type":"启动","score":56,"prob":1,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"301068","name":"大地海洋","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":15.05,"nmc":15.2,"turnover":2.9352,"amount":0.45,"pe":-65.435,"r5":-6.2,"r20":-25.7,"r60":-46.9,"limit60":0,"maxStreak":0,"fromHigh":-62.6,"fromLow":2.1,"vol60":4.01,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:29.602Z","type":"启动","score":54,"prob":1,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"603307","name":"扬州金泉","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":21,"nmc":20.4,"turnover":2.20698,"amount":0.46,"pe":12.963,"r5":-5.2,"r20":-10.9,"r60":-15.6,"limit60":0,"maxStreak":0,"fromHigh":-55.3,"fromLow":0.3,"vol60":2.44,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:21.345Z","type":"启动","score":52,"prob":0.9,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300121","name":"阳谷华泰","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":9.63,"nmc":41.4,"turnover":4.69397,"amount":1.95,"pe":21.4,"r5":-6.7,"r20":2.9,"r60":-0.9,"limit60":0,"maxStreak":1,"fromHigh":-42.3,"fromLow":10.3,"vol60":2.96,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:51.357Z","type":"启动","score":51,"prob":0.8,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300739","name":"明阳电路","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":19.35,"nmc":58.7,"turnover":5.51934,"amount":3.21,"pe":80.625,"r5":0.4,"r20":-2.8,"r60":-13.5,"limit60":0,"maxStreak":0,"fromHigh":-53.7,"fromLow":24.1,"vol60":5.2,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:14.153Z","type":"启动","score":51,"prob":0.8,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300740","name":"水羊股份","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":12.67,"nmc":51.8,"turnover":3.42592,"amount":1.79,"pe":33.342,"r5":-4.1,"r20":-25.7,"r60":-41.7,"limit60":0,"maxStreak":1,"fromHigh":-55.3,"fromLow":4.4,"vol60":4.23,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:16.089Z","type":"启动","score":48,"prob":0.7,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"601222","name":"林洋能源","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":4.79,"nmc":97.8,"turnover":0.88765,"amount":0.87,"pe":39.917,"r5":-5.9,"r20":-8.2,"r60":-13.8,"limit60":1,"maxStreak":1,"fromHigh":-32.2,"fromLow":0.6,"vol60":2.25,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:09.264Z","type":"启动","score":47,"prob":0.7,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300481","name":"濮阳惠成","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":10.58,"nmc":30.7,"turnover":1.56657,"amount":0.48,"pe":23.511,"r5":-9.1,"r20":-10.9,"r60":-24.8,"limit60":0,"maxStreak":1,"fromHigh":-53.6,"fromLow":1.1,"vol60":1.94,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:04.024Z","type":"启动","score":46,"prob":0.6,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"601099","name":"太平洋","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":3.05,"nmc":207.9,"turnover":1.51392,"amount":3.2,"pe":98.387,"r5":-5.9,"r20":-5.6,"r60":-13.1,"limit60":1,"maxStreak":1,"fromHigh":-34.5,"fromLow":0.7,"vol60":1.94,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:07.299Z","type":"启动","score":46,"prob":0.6,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"603213","name":"镇洋发展","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":12.7,"nmc":56.5,"turnover":0.50694,"amount":0.29,"pe":74.706,"r5":-6.3,"r20":-6.1,"r60":-9.2,"limit60":0,"maxStreak":0,"fromHigh":-15.6,"fromLow":1.7,"vol60":0.94,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:19.422Z","type":"启动","score":44,"prob":0.6,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300833","name":"浩洋股份","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":34.1,"nmc":27.7,"turnover":0.63629,"amount":0.18,"pe":25.07,"r5":-7.2,"r20":-12.7,"r60":-5.9,"limit60":0,"maxStreak":0,"fromHigh":-28.1,"fromLow":16.8,"vol60":2.78,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:18.874Z","type":"启动","score":43,"prob":0.5,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"301012","name":"扬电科技","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":16.24,"nmc":32,"turnover":1.63439,"amount":0.53,"pe":81.404,"r5":-14.5,"r20":-14.3,"r60":-31.2,"limit60":0,"maxStreak":1,"fromHigh":-63,"fromLow":1.2,"vol60":2.91,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:25.134Z","type":"启动","score":42,"prob":0.5,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"601022","name":"宁波远洋","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":7.34,"nmc":96.1,"turnover":0.41067,"amount":0.39,"pe":14.68,"r5":-2.8,"r20":-9.7,"r60":-11.8,"limit60":0,"maxStreak":1,"fromHigh":-34.7,"fromLow":1.8,"vol60":1.7,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:05.415Z","type":"启动","score":42,"prob":0.5,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"601997","name":"贵阳银行","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":5.83,"nmc":213.2,"turnover":1.40833,"amount":2.99,"pe":4.255,"r5":-1.9,"r20":1.7,"r60":4.5,"limit60":0,"maxStreak":0,"fromHigh":-8.5,"fromLow":14.3,"vol60":0.89,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:14.570Z","type":"启动","score":39,"prob":0.4,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"600348","name":"华阳股份","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":7.99,"nmc":288.2,"turnover":0.7832,"amount":2.25,"pe":18.581,"r5":-2.1,"r20":-5.6,"r60":-10.8,"limit60":0,"maxStreak":0,"fromHigh":-24.6,"fromLow":7.1,"vol60":2.05,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:51.533Z","type":"启动","score":37,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300516","name":"久之洋","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":25.25,"nmc":63.6,"turnover":3.5857,"amount":2.31,"pe":188.152,"r5":3.2,"r20":-24.2,"r60":-17.6,"limit60":0,"maxStreak":1,"fromHigh":-74.4,"fromLow":12.8,"vol60":4.25,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:06.839Z","type":"启动","score":36,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"301291","name":"明阳电气","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":30.11,"nmc":50.1,"turnover":1.55642,"amount":0.79,"pe":16.016,"r5":-7.7,"r20":-15.7,"r60":-19.9,"limit60":0,"maxStreak":0,"fromHigh":-59.2,"fromLow":2.3,"vol60":2.7,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:37.104Z","type":"启动","score":35,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"601615","name":"明阳智能","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":6.67,"nmc":150.8,"turnover":1.54329,"amount":2.36,"pe":21.733,"r5":-10.5,"r20":-20.4,"r60":-39,"limit60":0,"maxStreak":0,"fromHigh":-75.2,"fromLow":0.9,"vol60":2.31,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:11.945Z","type":"启动","score":33,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"301389","name":"隆扬电子","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":29.28,"nmc":83,"turnover":1.51671,"amount":1.27,"pe":79.135,"r5":-9.3,"r20":-21.3,"r60":-47.1,"limit60":0,"maxStreak":0,"fromHigh":-74.1,"fromLow":2.2,"vol60":4.31,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:39.043Z","type":"启动","score":32,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"301015","name":"百洋制药","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":21.12,"nmc":111,"turnover":1.34179,"amount":1.51,"pe":23.467,"r5":-9,"r20":-7,"r60":-13.8,"limit60":0,"maxStreak":0,"fromHigh":-26.6,"fromLow":14.8,"vol60":4.43,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:27.510Z","type":"启动","score":31,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300236","name":"上海新阳","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":62.98,"nmc":175.5,"turnover":3.50551,"amount":6.22,"pe":65.285,"r5":-16.5,"r20":-11.3,"r60":-27.2,"limit60":0,"maxStreak":0,"fromHigh":-54,"fromLow":19.6,"vol60":3.77,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:53.280Z","type":"启动","score":30,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"603825","name":"ST华扬","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":5.29,"nmc":13.4,"turnover":0.60784,"amount":0.08,"pe":-2.05,"r5":-8.2,"r20":-18.6,"r60":-35.3,"limit60":0,"maxStreak":1,"fromHigh":-49.2,"fromLow":5,"vol60":2.01,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:30.748Z","type":"退潮","score":30,"prob":0.3,"theme":"ST · 5.29 元 / 13.4 亿 · 日换手 0.6%","analysis":"13.4 亿流通 + 5.29 元看着像小盘低价胚子，但 ST 股涨停限制 5%、日换手仅 0.6%、成交 0.08 亿——流动性陷阱，资金进得去出不来，妖股逻辑在这里不成立。","trigger":"摘帽预期落地 + 换手放大到 3% 以上","risk":"退市风险是硬约束，且几乎无法出货"},{"code":"603993","name":"洛阳钼业","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":11.86,"nmc":2070.9,"turnover":0.90355,"amount":18.69,"pe":12.484,"r5":-0.3,"r20":-15.2,"r60":-39.5,"limit60":0,"maxStreak":1,"fromHigh":-58.8,"fromLow":5.3,"vol60":2.28,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:35.382Z","type":"启动","score":29,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"600673","name":"东阳光","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":19.82,"nmc":594.9,"turnover":1.48988,"amount":8.83,"pe":220.222,"r5":-7.4,"r20":-19.6,"r60":-37,"limit60":0,"maxStreak":1,"fromHigh":-53.7,"fromLow":5.1,"vol60":3.49,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:00.230Z","type":"启动","score":27,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"603156","name":"养元饮品","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":28.13,"nmc":354.5,"turnover":0.36523,"amount":1.31,"pe":28.138,"r5":-7,"r20":-16.7,"r60":-32.4,"limit60":0,"maxStreak":1,"fromHigh":-51,"fromLow":11.3,"vol60":2.55,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:08:16.910Z","type":"启动","score":27,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300274","name":"阳光电源","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":70.7,"nmc":1122.3,"turnover":2.39075,"amount":26.78,"pe":10.794,"r5":-1,"r20":5.2,"r60":-37.2,"limit60":0,"maxStreak":0,"fromHigh":-63.3,"fromLow":14,"vol60":2.99,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:55.192Z","type":"启动","score":26,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"300373","name":"扬杰科技","board":"创业板","hotRank":null,"hotHeat":"","hotTag":"","price":60.16,"nmc":326.1,"turnover":1.82858,"amount":6.03,"pe":25.82,"r5":-9.8,"r20":-17.4,"r60":-34.3,"limit60":0,"maxStreak":0,"fromHigh":-62.9,"fromLow":1.5,"vol60":3.21,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:06:59.706Z","type":"启动","score":22,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"},{"code":"600486","name":"扬农化工","board":"沪市主板","hotRank":null,"hotHeat":"","hotTag":"","price":50.88,"nmc":205.6,"turnover":0.74775,"amount":1.55,"pe":15.96,"r5":-5.3,"r20":-6.6,"r60":-6,"limit60":0,"maxStreak":0,"fromHigh":-43.3,"fromLow":5.1,"vol60":2.04,"bars":250,"source":"新浪不复权","at":"2026-11-26T12:07:53.427Z","type":"启动","score":22,"prob":0.3,"theme":"量化筛选 · 未做人工研判","analysis":"仅按市值/换手/涨停/位置做机械打分，未做题材与基本面研判，列为观察对象。","trigger":"出现放量涨停或公告催化后重新评估","risk":"缺乏题材支撑，多为跟随性波动"}]};
+</script>
+<script>
+(function () {
+  "use strict";
+  var DATA = window.__YAOGU__ || {};
+  var ALL = DATA.rows || [];
+  var state = { universe: "all", view: "rank" };
+
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function pct(v) {
+    if (v == null) return "—";
+    return (v > 0 ? "+" : "") + Number(v).toFixed(1) + "%";
+  }
+  function price(v) { return v == null ? "—" : Number(v).toFixed(2); }
+  function typeCls(t) {
+    return t === "续航" ? "t-cont" : t === "加速" ? "t-acc" : t === "退潮" ? "t-ebb" : "t-start";
+  }
+  function probWidth(p, max) { return Math.max(3, Math.min(100, (p / max) * 100)); }
+
+  function rows() {
+    var list = state.universe === "cold" ? ALL.filter(function (r) { return r.hotRank == null; }) : ALL.slice();
+    return list.sort(function (a, b) { return b.prob - a.prob || b.score - a.score; });
+  }
+
+  function stats() {
+    var list = rows();
+    var probs = list.map(function (r) { return r.prob; }).sort(function (a, b) { return a - b; });
+    var med = probs.length ? probs[Math.floor(probs.length / 2)] : 0;
+    var hot = list.filter(function (r) { return r.hotRank != null; }).length;
+    var going = list.filter(function (r) { return r.type === "续航" || r.type === "加速"; }).length;
+    var max = Math.max.apply(null, list.map(function (r) { return r.prob; }).concat([0]));
+    var avgScore = list.reduce(function (s, r) { return s + r.score; }, 0) / (list.length || 1);
+
+    $("hero-prob").textContent = max.toFixed(max < 10 ? 1 : 0);
+    $("hero-name").textContent = (list[0] && list[0].name) || "--";
+    $("hero-score").textContent = (list[0] && list[0].score) || "--";
+    $("hero-total").textContent = list.length;
+
+    var defs = [
+      { l: "候选数量", v: list.length, f: state.universe === "cold" ? "已剔除热榜在列" : "含热榜 " + hot + " 只" },
+      { l: "续航 / 加速", v: going, f: "已在主升浪中" },
+      { l: "启动型", v: list.length - going, f: "尚未启动" },
+      { l: "最高概率", v: max.toFixed(1) + "%", f: (list[0] && list[0].name) || "--" },
+      { l: "≥5% 候选", v: list.filter(function (r) { return r.prob >= 5; }).length, f: "概率 5% 以上" },
+      { l: "平均结构分", v: avgScore.toFixed(0), f: "满分 100" }
+    ];
+    $("stats").innerHTML = defs.map(function (d) {
+      return '<div class="stat"><div class="label">' + esc(d.l) + '</div>'
+        + '<div class="value gold">' + esc(d.v) + '</div>'
+        + '<div class="foot">' + esc(d.f) + "</div></div>";
+    }).join("");
+  }
+
+  function probCell(p, max) {
+    return '<div class="prob-wrap"><div class="prob-track"><div class="prob-fill'
+      + (p >= 15 ? " high" : "") + '" style="width:' + probWidth(p, max).toFixed(1) + '%"></div></div>'
+      + '<span class="prob-num">' + p.toFixed(1) + "%</span></div>";
+  }
+
+  function stockCell(r) {
+    return '<td class="stock"><div class="n">' + esc(r.name)
+      + (r.hotRank != null ? ' <span class="hot-badge">热榜 #' + r.hotRank + "</span>" : "")
+      + '</div><div class="c">' + esc(r.code) + " · " + esc(r.board) + "</div></td>";
+  }
+
+  function rankRow(r, i, max) {
+    return "<tr>"
+      + '<td class="idx ' + (i < 3 ? "top" + (i + 1) : "") + '">' + (i + 1) + "</td>"
+      + stockCell(r)
+      + '<td><span class="type ' + typeCls(r.type) + '">' + esc(r.type) + "</span></td>"
+      + '<td class="num c-price"><span class="price-cell">' + price(r.price) + "</span></td>"
+      + '<td class="num c-vol"><span class="price-cell">' + (r.nmc == null ? "—" : r.nmc.toFixed(1)) + "</span></td>"
+      + '<td class="num c-turn"><span class="price-cell">' + (r.turnover == null ? "—" : r.turnover.toFixed(1) + "%") + "</span></td>"
+      + '<td class="c-limit"><span class="price-cell">' + r.limit60 + " 次" + (r.maxStreak > 1 ? " / " + r.maxStreak + " 连" : "") + "</span></td>"
+      + '<td class="num c-high"><span class="chg ' + (r.fromHigh > -20 ? "rise" : r.fromHigh < -50 ? "fall" : "flat") + '">' + pct(r.fromHigh) + "</span></td>"
+      + '<td class="score-cell c-score">' + r.score + "</td>"
+      + '<td class="c-prob">' + probCell(r.prob, max) + "</td>"
+      + "</tr>";
+  }
+
+  function card(r, i, max) {
+    var hot = r.hotRank != null;
+    var meta = [
+      ["现价", price(r.price)],
+      ["流通", r.nmc == null ? "—" : r.nmc.toFixed(1) + "亿"],
+      ["换手", r.turnover == null ? "—" : r.turnover.toFixed(1) + "%"],
+      ["成交", r.amount == null ? "—" : r.amount.toFixed(2) + "亿"],
+      ["60日涨停", r.limit60 + " 次" + (r.maxStreak > 1 ? " / 最长 " + r.maxStreak + " 连" : "")],
+      ["距高", pct(r.fromHigh)],
+      ["60日", pct(r.r60)],
+      ["结构分", String(r.score)]
+    ];
+    return '<div class="ycard' + (hot ? " hot" : "") + '">'
+      + '<div class="yc-head"><span class="yc-rank">' + String(i + 1).padStart(2, "0") + "</span>"
+      + '<span class="yc-name">' + esc(r.name) + '</span><span class="yc-code">' + esc(r.code) + "</span>"
+      + '<span class="spacer"></span>'
+      + (hot ? '<span class="hot-badge">热榜 #' + r.hotRank + "</span>" : "")
+      + '<span class="type ' + typeCls(r.type) + '">' + esc(r.type) + "</span></div>"
+      + '<div class="yc-prob"><div class="track"><div class="fill' + (r.prob >= 15 ? " hot" : "") + '" style="width:' + probWidth(r.prob, max).toFixed(1) + '%"></div></div>'
+      + '<span class="v">' + r.prob.toFixed(1) + "%</span></div>"
+      + '<div class="yc-theme">' + esc(r.theme) + "</div>"
+      + '<div class="yc-meta">' + meta.map(function (m) { return "<span>" + m[0] + ' <b>' + esc(m[1]) + "</b></span>"; }).join("") + "</div>"
+      + '<div class="yc-text">' + esc(r.analysis) + "</div>"
+      + '<div class="yc-kv"><span class="k">触发</span><span class="v">' + esc(r.trigger) + "</span></div>"
+      + '<div class="yc-kv risk"><span class="k">风险</span><span class="v">' + esc(r.risk) + "</span></div>"
+      + "</div>";
+  }
+
+  function render() {
+    var list = rows();
+    var max = Math.max.apply(null, list.map(function (r) { return r.prob; }).concat([10]));
+    stats();
+
+    var top = list.slice(0, 12);
+    $("rank-body").innerHTML = top.map(function (r, i) { return rankRow(r, i, max); }).join("");
+    $("rank-hint").textContent = state.universe === "cold"
+      ? "已剔除热榜在列的 7 只，共 " + list.length + " 只候选"
+      : "含热榜在列 " + list.filter(function (r) { return r.hotRank != null; }).length + " 只，共 " + list.length + " 只候选";
+
+    var cardsTop = list.slice(0, 10);
+    $("cards").innerHTML = cardsTop.map(function (r, i) { return card(r, i, max); }).join("");
+    $("cards-hint").textContent = "TOP 10 · " + (state.universe === "cold" ? "非热榜" : "含热榜");
+
+    var rest = list.slice(12);
+    $("rest-body").innerHTML = rest.length
+      ? rest.map(function (r, i) { return rankRow(r, i + 12, max); }).join("")
+      : '<tr><td colspan="10"><div class="empty">没有更多候选</div></td></tr>';
+
+    $("meta-date").textContent = DATA.snapshotAt || "--";
+    $("foot-date").textContent = DATA.snapshotAt || "--";
+    $("foot-gen").textContent = DATA.generatedAt || "--";
+  }
+
+  $("universe").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-u]");
+    if (!b) return;
+    state.universe = b.getAttribute("data-u");
+    Array.prototype.forEach.call(this.querySelectorAll("button"), function (x) { x.classList.toggle("on", x === b); });
+    render();
+  });
+
+  $("view").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-v]");
+    if (!b) return;
+    state.view = b.getAttribute("data-v");
+    Array.prototype.forEach.call(this.querySelectorAll("button"), function (x) { x.classList.toggle("on", x === b); });
+    $("view-rank").hidden = state.view !== "rank";
+    $("view-cards").hidden = state.view !== "cards";
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
